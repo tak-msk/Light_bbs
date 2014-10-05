@@ -1,0 +1,48 @@
+header.jumbotron {
+	background: url("../img/snowboarding.jpg");
+	background-position: center center;
+	background-size: cover;
+	color: #fff;
+}
+
+header .container {
+	margin-top: 18%;
+}
+
+header .heading-btn {
+	border: 1px solid #fff;
+	color: #fff;
+	border-radius: 0;
+}
+
+header .heading-btn:hover {
+	color: #0089ff;
+	border-color: #0089ff;
+}
+
+.navbar-form {
+	padding-right: 30px;
+}
+
+.main-content .content-area {
+	padding: 20px 15px;
+}
+
+.sidebar aside {
+	background: #f0f0f0;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+footer {
+	color: #999;
+	text-align: center;
+	padding: 10px;
+	background: #101010;
+}
+
+@media screen and (max-width: 480px) {
+	header.jumbotron .container p {
+		font-size: 16px;
+	}
+}
