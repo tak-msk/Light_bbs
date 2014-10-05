@@ -28,6 +28,20 @@ header .heading-btn:hover {
 	padding: 20px 15px;
 }
 
+.video {
+	position: relative;
+	margin-top: 5%;
+	padding-bottom: 56.25%;
+}
+
+.video iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
 .sidebar aside {
 	background: #f0f0f0;
 	padding: 20px;
