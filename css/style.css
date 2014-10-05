@@ -24,6 +24,22 @@ header .heading-btn:hover {
 	padding-right: 30px;
 }
 
+.form {
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:8px;
+
+	width: 80%;
+	margin: 0 auto;
+	padding-bottom: 10px;
+	background: #f0f0f0;
+}
+
+p.alert {
+	padding: 0px;
+	margin-bottom: 0px;
+}
+
 .main-content .content-area {
 	padding: 20px 15px;
 }
@@ -45,6 +61,7 @@ header .heading-btn:hover {
 .sidebar aside {
 	background: #f0f0f0;
 	padding: 20px;
+	margin-top: 16%;
 	margin-bottom: 20px;
 }
 
