@@ -5,7 +5,7 @@
 
 	// initialize nums
 	foreach (array('name', 'email', 'text', 'token', 'page', 'submit') as $v) {
-		$$v = isset($_POST[$v]) && is_string($_POST[$v]) ? trin($_POST[$v]) : '';
+		$$v = isset($_POST[$v]) && is_string($_POST[$v]) ? trim($_POST[$v]) : '';
 	}
 
 	// fix page number to be more than 1
@@ -25,9 +25,15 @@
 		);
 	}
 
+	// Prepare for one time token
+	$_SESSION['token'] = array_slice(
+		array($token = sha1(mt_rand()) => 1) + $_SESSION['token'],
+		0,
+		TOKEN_MAX
+	);
+
 	// using PDO
 	try {
-	
 		// connect
 		$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
 		$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -54,14 +60,14 @@
 				}
 				// Check the name
 				if (!$len = mb_strlen($name) or $len > 30) {
-					$e = e('Please set your name in 30 letters.', $e);
+					$e = e('Please set your name less than 30 letters.', $e);
 				}
 				// Check the email
 				if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 					$e = e('Please set valid email address.', $e);
 				}
 				if (!$len = mb_strlen($text) or $len >= 140) {
-					$e = e('Please set a comment in 140 letters.', $e);
+					$e = e('Please set a comment less than 140 letters.', $e);
 				}
 				// if there is some error, throw this.
 				if (!empty($e)) {
@@ -111,12 +117,7 @@
 		// Set # of pages
 		$page_count = ceil($whole_count/DISP_MAX);
 	} catch (Exception $e) { }
-	// Prepare for next one time token
-	$_SESSION['token'] = array_slice(
-		array($token = sha1(mt_rand()) => 1) + $_SESSION['token'],
-		0,
-		TOKEN_MAX
-	);
+
 	// submit header
 	header('Content-type: application/xhtml+xml; charset=utf-8');
 ?>
@@ -131,44 +132,75 @@
 			</div>
 			
 			<!-- validation -->
-
+			<?php if (!empty($e)): ?>
+				<div id="message" class="col-sm-offset-2 col-sm-7">
+					<?php foreach (exception_to_array($e) as $msg): ?>
+					<p><?=h($msg)?></p>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-7">
-				<input type="text" name="name" value="<?php h($_SESSION['name']);?>" class="form-control" placeholder="Name">
+					<input type="text" name="name" value="<?php h($_SESSION['name']);?>" class="form-control" placeholder="Name">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-7">
-				<input class="form-control" type="text" name="email" value="<?php h($_SESSION['email']); ?>" placeholder="E-mail">
+					<input class="form-control" type="text" name="email" value="<?php h($_SESSION['email']); ?>" placeholder="E-mail">
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-8">
-				<textarea class="form-control" name="text" value="<?php h($_SESSION['text']);?>" rows="5" placeholder="Comment"></textarea>
+				<textarea class="form-control" name="text" rows="5" placeholder="Comment"><?php h($_SESSION['text']);?></textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-2">
-					<button type="submit" class="btn btn-default" name="submit">Send</button>
+					<input type="submit" class="btn btn-default" name="submit"/>
 				</div>
 				<label><input type="hidden" name="token" value="<?php h($token);?>"/></label>
 			</div>
 		</form>
 	</div>
 	<div class="row">
-		<div class="col-md-9 content-area">
-			<h2>Title</h2>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-			<p>Consectetur nobis voluptates repudiandae pariatur soluta dignissimos expedita. Ipsum eius officia laborum voluptate voluptate doloremque quod dolor omnis. Dolore libero ratione itaque excepturi quisquam quos! Ab laboriosam consequatur voluptatum aliquam!</p>
-		</div><!-- /.col-md-9 content-area -->
+		<?php if (!empty($articles)): ?>
+		<div id = "articles" class="col-md-9 content-area">
+			<?php foreach ($articles as $article): ?>
+			<div class="article">
+				<div id="article_name"><a href="mailto:<?=h($article['email'])?>"><?=h($article['name'])?></a></div>
+				<div id="article_text"><pre><?=h($article['text'])?></pre></div>
+				<div id="article_time"><?=h($article['created_at'])?></div>
+			</div><!-- /#article -->
+			<?php endforeach; ?>
+		
+			<?php if ($page > 1): ?>
+			<a href="?page=<?=$page-1?>">Previous</a>
+			<?php endif; ?>
+		
+			<a href="?">Newest</a>
+		
+			<?php if (!empty($page_count) and $page < $page_count): ?>
+			<a href="?page=<?=$page+1?>">Next</a>
+			<?php endif; ?>
+			<div id = "articles">
+				<p class="page"><?php
+					printf('%d~%d/%d',
+						($tmp = ($page - 1) * DISP_MAX) + 1,
+						$tmp + $current_count,
+						$whole_count
+					);
+				?></p>
+	    	</div>
+	    </div><!-- /.col-md-9 content-area -->
+		<?php else: ?>
+		<div id = "articles" class="col-md-offset-5 col-md-4 content-area">
+			<p class="page"><?php
+				if (empty($current_count)) {
+					echo 'There is no post';
+				} 
+			?></p>
+		</div>
+		<?php endif; ?>
 		<div class="col-md-3 sidebar">
 			<aside>
 				<h4>Link to category</h4>
@@ -192,7 +224,7 @@
 				</ul>
 			</aside>
 		</div><!-- /.col-md-3 sidebar -->
-	</div>
+	</div><!-- /.row -->
 </div><!-- /.container main-content -->
 
 <?php 

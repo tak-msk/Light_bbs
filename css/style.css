@@ -44,6 +44,16 @@ p.alert {
 	padding: 20px 15px;
 }
 
+.article {
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+
+	background: #f0f0f0;
+	margin-bottom: 15px;
+	padding: 10px 8px;
+}
+
 .video {
 	position: relative;
 	margin-top: 5%;
@@ -61,7 +71,7 @@ p.alert {
 .sidebar aside {
 	background: #f0f0f0;
 	padding: 20px;
-	margin-top: 16%;
+	margin-top: 8%;
 	margin-bottom: 20px;
 }
 
